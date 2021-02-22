@@ -20,6 +20,35 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include <iostream>
+
+unsigned int ElfHash(unsigned char* data) 
+{
+    unsigned int hash = 0;
+    unsigned int x = 0;
+    for (unsigned char* i = data; *i != '\0'; ++i) 
+    { 
+        hash = (hash << 4) + *i;
+        if ((x = hash & 0xF0000000L) != 0)
+        { 
+            hash ^= (x >> 24);
+            hash &= ~x;
+        }
+    }
+    return (hash & 0x7FFFFFFF);
+}
+
+unsigned int Hash(unsigned char* data)
+{
+    unsigned int hash = 0;
+    for (unsigned char* i = data; *i != '\0'; ++i)
+    {
+        hash = (hash << 8) + *i;
+        if ((hash & 0xF0000000L) != 0)
+            hash ^= (hash >> 42);
+    }
+    return (hash & 0x7FFFFFFF * 2);
+}
 
 int main(int argc, char* argv[])
 {
@@ -28,11 +57,13 @@ int main(int argc, char* argv[])
     int screenWidth = 800;
     int screenHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    InitWindow(screenWidth, screenHeight, "Hash-Slinging-Slasher");
 
     SetTargetFPS(60);
     //--------------------------------------------------------------------------------------
 
+    int checkSum = Hash((unsigned char*)"Joseph");
+    unsigned char* input = new unsigned char[0];
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -40,14 +71,15 @@ int main(int argc, char* argv[])
 
         // Update
         //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
+        std::cin >> input;
+        checkSum = Hash(input);
         //----------------------------------------------------------------------------------
 
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-        ClearBackground(RAYWHITE);
+        ClearBackground(GetColor(checkSum));
 
         EndDrawing();
         //----------------------------------------------------------------------------------
