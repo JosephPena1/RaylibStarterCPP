@@ -22,6 +22,7 @@
 #include "raylib.h"
 #include <iostream>
 
+//Example
 unsigned int ElfHash(unsigned char* data) 
 {
     unsigned int hash = 0;
@@ -47,12 +48,12 @@ unsigned int Hash(unsigned char* data)
         if ((hash & 0xF0000000L) != 0)
             hash ^= (hash >> 42);
     }
-    return (hash & 0x7FFFFFFF * 2);
+    return (hash & 0x7FFFFFFF);
 }
 
 int main(int argc, char* argv[])
 {
-    // Initialization
+    // Initialization //
     //--------------------------------------------------------------------------------------
     int screenWidth = 800;
     int screenHeight = 450;
@@ -65,17 +66,16 @@ int main(int argc, char* argv[])
     int checkSum = Hash((unsigned char*)"Joseph");
     unsigned char* input = new unsigned char[0];
 
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    // Main game loop //
+    while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-
-        // Update
+        // Update //
         //----------------------------------------------------------------------------------
         std::cin >> input;
         checkSum = Hash(input);
         //----------------------------------------------------------------------------------
 
-        // Draw
+        // Draw //
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
@@ -85,9 +85,9 @@ int main(int argc, char* argv[])
         //----------------------------------------------------------------------------------
     }
 
-    // De-Initialization
+    // De-Initialization //
     //--------------------------------------------------------------------------------------   
-    CloseWindow();        // Close window and OpenGL context
+    CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
     return 0;
